@@ -1,7 +1,0 @@
-{
-  "name": "School Bus Tracker",
-  "description": "Real-time school bus tracking for parents and drivers.",
-  "requestFramePermissions": ["geolocation"],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
-
