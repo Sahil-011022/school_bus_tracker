@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Helpers
+    function isSignedIn() { return request.auth != null; }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Buses Collection
+    match /buses/{busId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(busId);
+      
+      // Location Subcollection
+      match /locations/{locationId} {
+        allow get: if isSignedIn();
+        allow list: if isSignedIn();
+        allow create: if isSignedIn() && isValidId(locationId) 
+                      && incoming().timestamp == request.time;
+      }
+    }
+  }
+}

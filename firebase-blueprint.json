@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "Bus": {
+      "title": "Bus",
+      "description": "A school bus entity",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "driverName": { "type": "string" },
+        "routeName": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "driverName", "routeName", "status"]
+    },
+    "LocationUpdate": {
+      "title": "LocationUpdate",
+      "description": "A real-time location update for a bus",
+      "type": "object",
+      "properties": {
+        "busId": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["busId", "lat", "lng", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/buses/{busId}": {
+      "schema": "Bus",
+      "description": "Stores details about a bus"
+    },
+    "/buses/{busId}/locations/{locationId}": {
+      "schema": "LocationUpdate",
+      "description": "Real-time location updates for a specific bus"
+    }
+  }
+}
